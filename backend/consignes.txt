@@ -1,0 +1,60 @@
+Des étudiants de H3 Hitema créent H3-Travel, une plateforme e-commerce proposant des voyages à prix compétitifs (vols, hôtels, séjours packagés). 
+Aucune interface web n’est requise : seul le back-end est livré
+
+
+Objectif
+
+Développer une API sécurisée et maintenable en Go (framework Gin) (avec un swagger) avec un ORM (GORM) en (PSQL) pour gérer :
+
+Schéma complet de DB avec des champs et des cardinalités logiques.
+
+Authentification & rôles
+
+Sign-up / login (hash de mot de passe) ; via JWT.
+
+Rôles : admin / user
+
+Catalogue (admin)
+
+CRUD Voyages : titre, description, prix, quantité en stock, statut actif.
+
+Consultation liste/détail (publique)
+
+Commandes (user)
+
+Création d’une commande sur un voyage disponible (contrôle de stock).
+
+Validation du numéro de carte par algorithme de Luhn (paiement mock).
+
+États de commande : paid, cancelled.
+
+Historique des commandes de l’utilisateur.
+
+Gestion des erreurs
+
+Livrables
+
+Code source de l’API (Go) + README (installation, lancement, exemples cURL).
+
+Fichier de configuration (variables d’environnement).
+
+Jeux de requêtes de test (CURL / REST client).
+
+Critères d’évaluation
+
+Respect du périmètre et qualité du code (structure, clarté, erreurs gérées).
+
+Sécurité (hash, JWT, rôles) et validations (Luhn, stock).
+
+Pertinence du modèle de données et des réponses HTTP.
+
+Documentation (README) et facilité de lancement.
+
+Bonus réalisés (Docker, tests).
+
+
+Bonus :
+Docker
+Test unitaire
+Qualite de code (evitez la logique metier dans vos routes)
+Les idees de vos choix

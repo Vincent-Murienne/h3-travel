@@ -1,0 +1,27 @@
+services:
+  db:
+    image: postgres:15
+    container_name: h3_travel_db
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: h3_travel
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    container_name: h3_travel_backend
+    restart: always
+    depends_on:
+      - db
+    env_file:
+      - ./backend/.env.development
+    ports:
+      - "8080:8080"
+
+volumes:
+  db_data:

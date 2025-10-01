@@ -61,7 +61,7 @@ func CreateOrder(c *gin.Context) {
 	}
 
 	// Décrémente le stock
-	config.DB.Model(&voyage).Update("Quantite", voyage.Stock-1)
+	config.DB.Model(&voyage).Update("Stock", voyage.Stock-1)
 
 	c.JSON(http.StatusOK, order)
 }
@@ -121,7 +121,7 @@ func CancelOrder(c *gin.Context) {
 	// Restock le voyage
 	var voyage models.Voyage
 	config.DB.First(&voyage, order.VoyageID)
-	config.DB.Model(&voyage).Update("Quantite", voyage.Stock+1)
+	config.DB.Model(&voyage).Update("Stock", voyage.Stock+1)
 
 	c.JSON(http.StatusOK, order)
 }

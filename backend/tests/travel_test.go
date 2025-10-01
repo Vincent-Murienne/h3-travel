@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"strconv"
 	"testing"
 
 	"h3-travel/controllers"
@@ -41,7 +42,7 @@ func TestTravelCRUD(t *testing.T) {
 	json.Unmarshal(resp.Body.Bytes(), &travel)
 
 	// Récupération
-	reqGet := httptest.NewRequest("GET", "/voyages/"+string(rune(travel.ID)), nil)
+	reqGet := httptest.NewRequest("GET", "/voyages/"+strconv.Itoa(int(travel.ID)), nil)
 	respGet := httptest.NewRecorder()
 	router.ServeHTTP(respGet, reqGet)
 	assert.Equal(t, http.StatusOK, respGet.Code)
@@ -49,7 +50,7 @@ func TestTravelCRUD(t *testing.T) {
 	// Update
 	updatePayload := map[string]interface{}{"stock": 5}
 	bodyUpdate, _ := json.Marshal(updatePayload)
-	reqUpdate := httptest.NewRequest("PUT", "/voyages/"+string(rune(travel.ID)), bytes.NewBuffer(bodyUpdate))
+	reqUpdate := httptest.NewRequest("PUT", "/voyages/"+strconv.Itoa(int(travel.ID)), bytes.NewBuffer(bodyUpdate))
 	reqUpdate.Header.Set("Content-Type", "application/json")
 	respUpdate := httptest.NewRecorder()
 	router.ServeHTTP(respUpdate, reqUpdate)

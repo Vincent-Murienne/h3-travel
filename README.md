@@ -68,6 +68,9 @@ Normalement pas besoin d'y toucher
 ```bash
 docker-compose up --build
 
+### Modification / Ajout de requêtes accessibles sur Swagger
+swag init
+
 ## Serveur Gin accessible sur http://localhost:8080.
 ## Swagger accessible sur http://localhost:8080/swagger/index.html
 ## Base PostgreSQL sur le port 5432.

@@ -84,9 +84,9 @@ swag init
 ## Rentrer dans le containeur db :
 docker exec -it h3_travel_db psql -U admin -d h3_travel
 
-\dt              -- liste toutes les tables
-\d users         -- structure de la table users (par exemple)
-SELECT * FROM users;  -- voir les utilisateurs
+\dt              ## liste toutes les tables
+\d users         ## structure de la table users (par exemple)
+SELECT * FROM users;  ## voir les utilisateurs
 
 ## Serveur Gin accessible sur http://localhost:8080
 ## Swagger accessible sur http://localhost:8080/swagger/index.html

@@ -69,7 +69,7 @@ Normalement pas besoin d'y toucher
 docker-compose up --build -d
 
 ## Création d'un compte admin
-Remplacer : default:'user' par default:'admin'
+## Remplacer : default:'user' par default:'admin'
 
 type User struct {
 	gorm.Model

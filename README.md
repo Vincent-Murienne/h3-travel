@@ -66,7 +66,17 @@ Normalement pas besoin d'y toucher
 
 ## 7️⃣ Lancer le projet :
 ```bash
-docker-compose up --build
+docker-compose up --build -d
+
+## Création d'un compte admin
+Remplacer : default:'user' par default:'admin'
+
+type User struct {
+	gorm.Model
+	Email    string `gorm:"uniqueIndex;not null"`
+	Password string `gorm:"not null"`
+	Role     string `gorm:"type:varchar(10);default:'user'"` // "user" ou "admin"
+}
 
 ## Modification / Ajout de requêtes accessibles sur Swagger
 swag init

@@ -79,5 +79,5 @@ swag init
 ## Commandes tests unitaires depuis le dossier backend 
 go test ./... -coverprofile=coverage.out
 
-## Pour faire fonctionner SonarQube : .example dans sonar-project.properties 
+## Pour faire fonctionner SonarQube : retirr '.example' dans sonar-project.properties 
 ```

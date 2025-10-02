@@ -68,8 +68,11 @@ Normalement pas besoin d'y toucher
 ```bash
 docker-compose up --build
 
-### Modification / Ajout de requêtes accessibles sur Swagger
+## Modification / Ajout de requêtes accessibles sur Swagger
 swag init
+
+## Rentrer dans le containeur db :
+docker exec -it h3_travel_db psql -U admin -d h3_travel
 
 ## Serveur Gin accessible sur http://localhost:8080
 ## Swagger accessible sur http://localhost:8080/swagger/index.html

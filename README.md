@@ -71,7 +71,11 @@ docker-compose up --build
 ### Modification / Ajout de requêtes accessibles sur Swagger
 swag init
 
-## Serveur Gin accessible sur http://localhost:8080.
+## Serveur Gin accessible sur http://localhost:8080
 ## Swagger accessible sur http://localhost:8080/swagger/index.html
+## SonarQube accessible sur (intégration avec Github Actions) http://localhost:9000
 ## Base PostgreSQL sur le port 5432.
+
+## Commandes tests unitaires depuis le dossier backend 
+go test ./... -coverprofile=coverage.out
 ```

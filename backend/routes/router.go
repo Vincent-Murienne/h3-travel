@@ -15,14 +15,14 @@ func SetupRouter() *gin.Engine {
 		api.POST("/signup", controllers.SignUp)
 		api.POST("/login", controllers.Login)
 
-		voyage := api.Group("/travels")
-		voyage.GET("", controllers.GetTravels)
-		voyage.GET("/:id", controllers.GetVoyage)
-		voyage.Use(middlewares.AdminMiddleware())
+		travel := api.Group("/travels")
+		travel.GET("", controllers.GetTravels)
+		travel.GET("/:id", controllers.GetTravel)
+		travel.Use(middlewares.AdminMiddleware())
 		{
-			voyage.POST("", controllers.CreateVoyage)
-			voyage.PUT("/:id", controllers.UpdateVoyage)
-			voyage.DELETE("/:id", controllers.DeleteVoyage)
+			travel.POST("", controllers.CreateTravel)
+			travel.PUT("/:id", controllers.UpdateTravel)
+			travel.DELETE("/:id", controllers.DeleteTravel)
 		}
 
 		orders := api.Group("/orders")

@@ -4,37 +4,38 @@ import (
 	"h3-travel/config"
 	"h3-travel/models"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
 
 // --- CREATE ---
-// CreateVoyage godoc
-// @Summary Crée un voyage
-// @Description Permet à un admin de créer un nouveau voyage
+// CreateTravel godoc
+// @Summary Crée un travel
+// @Description Permet à un admin de créer un nouveau travel
 // @Tags Travels
 // @Accept json
 // @Produce json
-// @Param voyage body models.Voyage true "Voyage"
-// @Success 200 {object} models.Voyage
+// @Param travel body models.Travel true "Travel"
+// @Success 200 {object} models.Travel
 // @Failure 400 {object} map[string]string
 // @Failure 401 {object} map[string]string
 // @Failure 403 {object} map[string]string
 // @Router /travels [post]
 // @Security BearerAuth
-func CreateVoyage(c *gin.Context) {
-	var voyage models.Voyage
-	if err := c.ShouldBindJSON(&voyage); err != nil {
+func CreateTravel(c *gin.Context) {
+	var travel models.Travel
+	if err := c.ShouldBindJSON(&travel); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	if err := config.DB.Create(&voyage).Error; err != nil {
+	if err := config.DB.Create(&travel).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, voyage)
+	c.JSON(http.StatusOK, travel)
 }
 
 // --- READ ALL ---
@@ -43,90 +44,111 @@ func CreateVoyage(c *gin.Context) {
 // @Description Permet à un admin de voir la liste de tous les travels
 // @Tags Travels
 // @Produce json
-// @Success 200 {array} models.Voyage
+// @Success 200 {array} models.Travel
 // @Failure 401 {object} map[string]string
 // @Failure 403 {object} map[string]string
 // @Router /travels [get]
 func GetTravels(c *gin.Context) {
-	var travels []models.Voyage
+	var travels []models.Travel
 	config.DB.Find(&travels)
 	c.JSON(http.StatusOK, travels)
 }
 
 // --- READ ONE ---
-// GetVoyage godoc
-// @Summary Récupère un voyage
-// @Description Permet à un admin de récupérer un voyage par son ID
+// GetTravel godoc
+// @Summary Récupère un travel
+// @Description Permet à un admin de récupérer un travel par son ID
 // @Tags Travels
 // @Produce json
-// @Param id path int true "ID du voyage"
-// @Success 200 {object} models.Voyage
+// @Param id path int true "ID du travel"
+// @Success 200 {object} models.Travel
+// @Failure 400 {object} map[string]string
 // @Failure 401 {object} map[string]string
 // @Failure 403 {object} map[string]string
 // @Failure 404 {object} map[string]string
 // @Router /travels/{id} [get]
-func GetVoyage(c *gin.Context) {
-	id := c.Param("id")
-	var voyage models.Voyage
-	if err := config.DB.First(&voyage, id).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Voyage non trouvé"})
+func GetTravel(c *gin.Context) {
+	idParam := c.Param("id")
+	id, err := strconv.ParseUint(idParam, 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ID invalide"})
 		return
 	}
-	c.JSON(http.StatusOK, voyage)
+
+	var travel models.Travel
+	if err := config.DB.First(&travel, uint(id)).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Travel non trouvé"})
+		return
+	}
+
+	c.JSON(http.StatusOK, travel)
 }
 
 // --- UPDATE ---
-// UpdateVoyage godoc
-// @Summary Met à jour un voyage
-// @Description Permet à un admin de mettre à jour un voyage existant
+// UpdateTravel godoc
+// @Summary Met à jour un travel
+// @Description Permet à un admin de mettre à jour un travel existant
 // @Tags Travels
 // @Accept json
 // @Produce json
-// @Param id path int true "ID du voyage"
-// @Param voyage body models.Voyage true "Voyage à mettre à jour"
-// @Success 200 {object} models.Voyage
+// @Param id path int true "ID du travel"
+// @Param travel body models.Travel true "Travel à mettre à jour"
+// @Success 200 {object} models.Travel
 // @Failure 400 {object} map[string]string
 // @Failure 401 {object} map[string]string
 // @Failure 403 {object} map[string]string
 // @Failure 404 {object} map[string]string
 // @Router /travels/{id} [put]
 // @Security BearerAuth
-func UpdateVoyage(c *gin.Context) {
-	id := c.Param("id")
-	var voyage models.Voyage
-	if err := config.DB.First(&voyage, id).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Voyage non trouvé"})
+func UpdateTravel(c *gin.Context) {
+	idParam := c.Param("id")
+	id, err := strconv.ParseUint(idParam, 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ID invalide"})
 		return
 	}
 
-	var input models.Voyage
+	var travel models.Travel
+	if err := config.DB.First(&travel, uint(id)).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Travel non trouvé"})
+		return
+	}
+
+	// Bind JSON pour les updates
+	var input models.Travel
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	config.DB.Model(&voyage).Updates(input)
-	c.JSON(http.StatusOK, voyage)
+	config.DB.Model(&travel).Updates(input)
+	c.JSON(http.StatusOK, travel)
 }
 
 // --- DELETE ---
-// DeleteVoyage godoc
-// @Summary Supprime un voyage
-// @Description Permet à un admin de supprimer un voyage par son ID
+// DeleteTravel godoc
+// @Summary Supprime un travel
+// @Description Permet à un admin de supprimer un travel par son ID
 // @Tags Travels
 // @Produce json
-// @Param id path int true "ID du voyage"
+// @Param id path int true "ID du travel"
 // @Success 200 {object} map[string]string
 // @Failure 401 {object} map[string]string
 // @Failure 403 {object} map[string]string
 // @Failure 500 {object} map[string]string
 // @Router /travels/{id} [delete]
 // @Security BearerAuth
-func DeleteVoyage(c *gin.Context) {
-	id := c.Param("id")
-	if err := config.DB.Delete(&models.Voyage{}, id).Error; err != nil {
+func DeleteTravel(c *gin.Context) {
+	idParam := c.Param("id")
+	id, err := strconv.ParseUint(idParam, 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ID invalide"})
+		return
+	}
+
+	if err := config.DB.Delete(&models.Travel{}, uint(id)).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"message": "Voyage supprimé"})
+	c.JSON(http.StatusOK, gin.H{"message": "Travel supprimé"})
 }

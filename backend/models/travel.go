@@ -2,7 +2,7 @@ package models
 
 import "gorm.io/gorm"
 
-type Voyage struct {
+type Travel struct {
 	gorm.Model
 	Title       string  `gorm:"not null"`
 	Description string  `gorm:"type:text"`

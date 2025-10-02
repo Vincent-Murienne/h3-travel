@@ -12,7 +12,7 @@ import (
 // --- CREATE ORDER ---
 // CreateOrder godoc
 // @Summary Crée une commande
-// @Description Permet à un utilisateur de créer une commande pour un voyage
+// @Description Permet à un utilisateur de créer une commande pour un travel
 // @Tags Orders
 // @Accept json
 // @Produce json
@@ -37,21 +37,21 @@ func CreateOrder(c *gin.Context) {
 	}
 
 	// Vérifie le stock
-	var voyage models.Voyage
-	if err := config.DB.First(&voyage, input.VoyageID).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Voyage non trouvé"})
+	var travel models.Travel
+	if err := config.DB.First(&travel, input.TravelID).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Travel non trouvé"})
 		return
 	}
 
-	if voyage.Stock <= 0 || !voyage.Active {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Voyage indisponible"})
+	if travel.Stock <= 0 || !travel.Active {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Travel indisponible"})
 		return
 	}
 
 	// Crée la commande
 	order := models.Order{
 		UserID:   c.GetUint("user_id"),
-		VoyageID: input.VoyageID,
+		TravelID: input.TravelID,
 		Statut:   "paid",
 	}
 
@@ -61,7 +61,7 @@ func CreateOrder(c *gin.Context) {
 	}
 
 	// Décrémente le stock
-	config.DB.Model(&voyage).Update("Stock", voyage.Stock-1)
+	config.DB.Model(&travel).Update("Stock", travel.Stock-1)
 
 	c.JSON(http.StatusOK, order)
 }
@@ -118,10 +118,10 @@ func CancelOrder(c *gin.Context) {
 	order.Statut = "cancelled"
 	config.DB.Save(&order)
 
-	// Restock le voyage
-	var voyage models.Voyage
-	config.DB.First(&voyage, order.VoyageID)
-	config.DB.Model(&voyage).Update("Stock", voyage.Stock+1)
+	// Restock le travel
+	var travel models.Travel
+	config.DB.First(&travel, order.TravelID)
+	config.DB.Model(&travel).Update("Stock", travel.Stock+1)
 
 	c.JSON(http.StatusOK, order)
 }

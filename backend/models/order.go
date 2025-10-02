@@ -1,13 +1,15 @@
 package models
 
+import "gorm.io/gorm"
+
 type Order struct {
-	ID       uint   `json:"id"`
+	gorm.Model
 	UserID   uint   `json:"user_id"`
-	VoyageID uint   `json:"voyage_id"`
+	TravelID uint   `json:"travel_id"`
 	Statut   string `json:"statut"`
 }
 
 type CreateOrderInput struct {
-	VoyageID uint   `json:"voyage_id" binding:"required"`
+	TravelID uint   `json:"travel_id" binding:"required"`
 	Card     string `json:"card" binding:"required"`
 }

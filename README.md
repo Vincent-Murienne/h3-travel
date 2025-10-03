@@ -81,8 +81,11 @@ type User struct {
 ## Modification / Ajout de requêtes accessibles sur Swagger
 swag init
 
-## Rentrer dans le containeur db :
+## Rentrer dans le containeur db h3_travel :
 docker exec -it h3_travel_db psql -U admin -d h3_travel
+
+## Rentrer dans le containeur postgres :
+docker exec -it h3_travel_db psql -U admin -d postgres
 
 \dt              ## liste toutes les tables
 \d users         ## structure de la table users (par exemple)
@@ -91,6 +94,9 @@ SELECT * FROM users;  ## voir les utilisateurs
 ## Serveur Gin accessible sur http://localhost:8080
 ## Swagger accessible sur http://localhost:8080/swagger/index.html
 ## SonarQube accessible sur (intégration avec Github Actions) http://localhost:9000
+## Grafana accessible sur http://localhost:3000
+## Prometheus accessible sur http://localhost:9090
+## Node Exporter accessible sur http://localhost:9100
 ## Base PostgreSQL sur le port 5432.
 
 ## Commandes tests unitaires depuis le dossier backend 
